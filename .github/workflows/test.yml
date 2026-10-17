@@ -1,0 +1,17 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  simulation:
+    runs-on: ubuntu-22.04
+    env:
+      MUJOCO_GL: egl
+      PYOPENGL_PLATFORM: egl
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: astral-sh/setup-uv@v6
+      - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libopengl0
+      - run: uv sync --python 3.10 --extra test --extra mink --locked
+      - run: uv run pytest -q
+      - run: uv run pytest -q external/dual_kinova3_teleop/external/XRT_devices/tests/test_gstreamer.py

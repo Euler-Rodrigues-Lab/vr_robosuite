@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vr-robosuite"
+version = "0.1.0"
+description = "Binocular Quest teleoperation and reproducible robosuite user-study trials"
+requires-python = ">=3.10,<3.13"
+dependencies = ["dual-kinova3-teleop", "xrt-devices[xr,recording]", "geo-kin-core", "robosuite==1.5.1", "mujoco==3.3.7", "numpy>=1.26,<2", "scipy>=1.11,<1.16", "h5py>=3.10", "pillow>=10"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+mink = ["mink", "quadprog"]
+
+[project.scripts]
+vr-robosuite = "vr_robosuite.cli:main"
+vr-study = "vr_robosuite.study:main"
+
+[tool.uv.sources]
+dual-kinova3-teleop = {path = "external/dual_kinova3_teleop", editable = true}
+xrt-devices = {path = "external/dual_kinova3_teleop/external/XRT_devices", editable = true}
+geo-kin-core = {path = "external/dual_kinova3_teleop/external/geo_kin_core", editable = true}
+
+[tool.geo-kin]
+product = "dual_kinova3-psyonic"
+
+[tool.setuptools.packages.find]
+include = ["vr_robosuite*"]
+
+[tool.setuptools.package-data]
+vr_robosuite = ["objects/assets/**/*", "configs/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

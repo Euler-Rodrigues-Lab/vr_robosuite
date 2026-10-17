@@ -1,0 +1,62 @@
+{
+    "type": "BASIC",
+    "body_parts": {
+        "arms": {
+            "right": {
+                "type": "JOINT_POSITION",
+                "input_max": [9999.9, 2.41, 9999.9, 2.66, 9999.9, 2.23, 9999.9],
+                "input_min": [-9999.9, -2.41, -9999.9, -2.66, -9999.9, -2.23, -9999.9],
+                "input_type": "absolute",
+                "output_max": [9999.9, 2.41, 9999.9, 2.66, 9999.9, 2.23, 9999.9],
+                "output_min": [-9999.9, -2.41, -9999.9, -2.66, -9999.9, -2.23, -9999.9],
+                "damping_ratio": 1,
+                "kp": 1000,
+                "velocity_limits": [-1,1],
+                "kp_limits": [0, 5000],
+                "policy_freq": 20,
+                "interpolation": null,
+                "ramp_ratio": 0.2,
+                "gripper": {
+                    "type": "GRIP",
+                    "use_action_scaling": false,
+                    "interpolation": null
+                }
+            },
+            "left": {
+                "type": "JOINT_POSITION",
+                "input_max": [9999.9, 2.41, 9999.9, 2.66, 9999.9, 2.23, 9999.9],
+                "input_min": [-9999.9, -2.41, -9999.9, -2.66, -9999.9, -2.23, -9999.9],
+                "input_type": "absolute",
+                "output_max": [9999.9, 2.41, 9999.9, 2.66, 9999.9, 2.23, 9999.9],
+                "output_min": [-9999.9, -2.41, -9999.9, -2.66, -9999.9, -2.23, -9999.9],
+                "damping_ratio": 1,
+                "kp": 1000,
+                "velocity_limits": [-1,1],
+                "kp_limits": [0, 5000],
+                "policy_freq": 20,
+                "interpolation": null,
+                "ramp_ratio": 0.2,
+                "gripper": {
+                    "type": "GRIP",
+                    "use_action_scaling": false,
+                    "interpolation": null
+                }
+            }
+        },
+        "head": {
+            "type": "JOINT_POSITION",
+            "input_max": [1.5707963267948966, 1.0471975511965976],
+            "input_min": [-1.5707963267948966, -1.0471975511965976],
+            "input_type": "absolute",
+            "output_max": [1.5707963267948966, 1.0471975511965976],
+            "output_min": [-1.5707963267948966, -1.0471975511965976],
+            "damping_ratio": 1,
+            "kp": 50,
+            "velocity_limits": [-1,1],
+            "kp_limits": [0, 100],
+            "policy_freq": 20,
+            "interpolation": null,
+            "ramp_ratio": 0.2
+        }
+    }
+}

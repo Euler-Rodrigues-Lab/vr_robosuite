@@ -1,0 +1,101 @@
+{
+  "source_revision": "24e3c96ce3c8cdc3069be9efb5440201df61d49c",
+  "files": {
+    "vr_robosuite/envs/exp_cabinet.py": {
+      "source": "projects/experiment_envs/exp_cabinet.py",
+      "sha256": "c951d21bc768cfce0762b67dbd5f36b611f2b45fe66076834a62edf94898c7a7"
+    },
+    "vr_robosuite/envs/exp_glass_gap.py": {
+      "source": "projects/experiment_envs/exp_glass_gap.py",
+      "sha256": "0a4d98cac2c9ce7a2a0a269ab8d2f44873e1df576a295af272ac75d9c19662f2"
+    },
+    "vr_robosuite/envs/exp_handover.py": {
+      "source": "projects/experiment_envs/exp_handover.py",
+      "sha256": "b56088a0be90d9cfdf9943c17cc58846330ef76acbba7c5c751e269b12cbe2e0"
+    },
+    "vr_robosuite/objects/custom_objs.py": {
+      "source": "projects/custom_objs/custom_objs.py",
+      "sha256": "768ea1d7ac215ee41114301b113375ead9e7568cb5dd84afd4b449c4d192a274"
+    },
+    "vr_robosuite/objects/custom_arenas.py": {
+      "source": "projects/custom_objs/custom_arenas.py",
+      "sha256": "ee5a5ce338690369d59a76c655d9a9688941f09ca31c8b113f8cdbc644a99fa9"
+    },
+    "vr_robosuite/objects/assets/arenas/cabinet_arena.xml": {
+      "source": "projects/custom_objs/assets/arenas/cabinet_arena.xml",
+      "sha256": "d043ae1faebfd5f47b3301a6501ca7991f49b0d81a130a86fa2f5307eabaf2b9"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/light-gray-floor-tile.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/light-gray-floor-tile.png",
+      "sha256": "a2aae4ba3b38c3ab9851eca9ad6e76cef9357ef75b3e9a4b280f694ca30acbc5"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/ceramic.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/ceramic.png",
+      "sha256": "beef464a2aa9143ba6a25a44adcbfd1f1aff16c5969edbf08019b61025388402"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/steel-brushed.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/steel-brushed.png",
+      "sha256": "43f30e7a2d0e8085aa15f58623b1753a003f93e5fe336eeaf65c146f955a81d5"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/light-gray-plaster.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/light-gray-plaster.png",
+      "sha256": "d0bdaf13b44ab6ef3122451f6b3853e40bdf20bb9be7662649683ba525dfe191"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/light-wood.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/light-wood.png",
+      "sha256": "967be64bdb170d36283bc43c2ae5d525ec88f78bc837dc7d0efc9a28d68caad1"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/dark-wood.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/dark-wood.png",
+      "sha256": "5da8dbf7af06ecd251840aceec25fedcfa98267041cea289b2829c982e008dc3"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/brass-ambra.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/brass-ambra.png",
+      "sha256": "246007818045b92276631294bb61d797806f2381d7044e98b6e3c4465f8e085c"
+    },
+    "vr_robosuite/objects/assets/models/assets/textures/metal.png": {
+      "source": "projects/custom_objs/assets/models/assets/textures/metal.png",
+      "sha256": "93784216a66b52be9c8ccc3732e50f511815291e32f34f97bd139ed7229061fa"
+    },
+    "vr_robosuite/objects/assets/arenas/table_shadow_arena.xml": {
+      "source": "projects/custom_objs/assets/arenas/table_shadow_arena.xml",
+      "sha256": "34187de037693dd37b11ba03d193a301742e4d5385655dcdf011214ba7a8a5c1"
+    },
+    "vr_robosuite/objects/assets/objects/wine_glass.xml": {
+      "source": "projects/custom_objs/assets/objects/wine_glass.xml",
+      "sha256": "3075979701f83383b5039dd6646187e66aa64127ecf1bd22af7f4c428d112615"
+    },
+    "vr_robosuite/objects/assets/objects/meshes/wine_glass.stl": {
+      "source": "projects/custom_objs/assets/objects/meshes/wine_glass.stl",
+      "sha256": "e377603299532b7195127c83fdd0987d9bc16c48018f92124515ba413dfea623"
+    },
+    "vr_robosuite/objects/assets/objects/shelf.xml": {
+      "source": "projects/custom_objs/assets/objects/shelf.xml",
+      "sha256": "7c351c54693d59b0876cad7326e65e32a622d9b51d81f1854fb6af9d955cc42b"
+    },
+    "vr_robosuite/objects/assets/objects/visual_goalzone.xml": {
+      "source": "projects/custom_objs/assets/objects/visual_goalzone.xml",
+      "sha256": "5a933ed73ddbfb7070c22b12ca304934fe8c72ddcade4f2797e1958b7f4634a9"
+    },
+    "vr_robosuite/contact_logger.py": {
+      "source": "projects/data/contact_logger.py",
+      "sha256": "9c508d948e35b61d7acb48aea731ece7d15fb021d5340a51fb16202e8c872fe9"
+    },
+    "vr_robosuite/models.py": {
+      "source": "projects/dual_kinova3_teleop/dual_kinova3/dual_kinova3_robot.py",
+      "sha256": "6e78eb9e0701e2a7ea73c1658d339aad0b02c2171fffa7440b43546c07231574"
+    },
+    "vr_robosuite/grippers.py": {
+      "source": "projects/dual_kinova3_teleop/grippers/robotiq_2f85_v4_gripper.py",
+      "sha256": "f491fb04b8d2df600379a4d074a7343dea14c692dd883685de836c5ad0982a98"
+    },
+    "vr_robosuite/configs/joint_position.json": {
+      "source": "projects/dual_kinova3_teleop/controllers/config/robots/dualkinova3_sew_mimic_joint_position.json",
+      "sha256": "b2ccbd5077e9e75e5dde0c046b0d81ef130689867f0fc2731d8dbbfbad824a79"
+    },
+    "SOURCE_LICENSE.txt": {
+      "source": "LICENSE",
+      "sha256": "177978cbece0a4c454c2aaec5b3f145b39270814874c43109da9e829c39d9cba"
+    }
+  }
+}

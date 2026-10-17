@@ -1,0 +1,111 @@
+<!-- modification of https://github.com/vikashplus/mj_envs/tree/master/mj_envs/hand_manipulation_suite/assets -->
+<!-- Information about door can be found in this paper: https://arxiv.org/pdf/1709.10087.pdf -->
+
+<mujoco model="cabinet_arena">
+    <asset>
+        <!-- Room and table textures -->
+        <texture builtin="gradient" height="256" rgb1=".9 .9 1." rgb2=".2 .3 .4" type="skybox" width="256"/>
+        <texture file="../models/assets/textures/light-gray-floor-tile.png" type="2d" name="texplane"/>
+        <material name="floorplane" reflectance="0.01" shininess="0.0" specular="0.0" texrepeat="2 2" texture="texplane" texuniform="true"/>
+        <!-- ceramic table texture and material-->
+        <texture file="../models/assets/textures/ceramic.png" type="cube" name="tex-ceramic"/>
+        <material name="table_ceramic" reflectance="0.0" shininess="0.0" specular="0.2" texrepeat="1 1" texture="tex-ceramic" />
+        <!-- steel legs -->
+        <texture file="../models/assets/textures/steel-brushed.png" type="cube" name="tex-steel-brushed"/>
+        <material name="table_legs_metal" reflectance="0.8" shininess="0.8" texrepeat="1 1" texture="tex-steel-brushed" />
+        <!-- plaster walls -->
+        <texture file="../models/assets/textures/light-gray-plaster.png" type="2d" name="tex-light-gray-plaster"/>
+        <material name="walls_mat" reflectance="0.0" shininess="0.1" specular="0.1" texrepeat="3 3" texture="tex-light-gray-plaster" texuniform="true" />
+        <!-- added table texture and material for domain randomization -->
+        <texture  name="textable" builtin="flat" height="512" width="512" rgb1="0.5 0.5 0.5" rgb2="0.5 0.5 0.5"/>
+        <material name="table_mat" texture="textable" />
+        <!-- Door textures -->
+        <texture file="../models/assets/textures/light-wood.png" type="cube" name="light-wood" />
+        <texture file="../models/assets/textures/dark-wood.png" type="cube" name="dark-wood" />
+        <texture file="../models/assets/textures/brass-ambra.png" type="cube" name="brass" />
+        <texture file="../models/assets/textures/metal.png" type="cube" name="metal" />
+        <material name="MatMetal" texture="brass" specular="1" shininess="0.3" rgba="0.9 0.9 0.9 1" />
+        <material name="MatClearMetal" texture="metal" specular="0.4" shininess="0.1" rgba="0.8 0.8 0.8 0.5"/>
+        <!-- <material name="MatDarkWood" texture="dark-wood" texrepeat="3 3" specular="0.4" shininess="0.1" rgba="1 1 1 0.5" /> -->
+        <material name="MatLightWood" texture="light-wood" texrepeat="3 3" specular="0.4" shininess="0.1" />
+    </asset>
+    <worldbody>
+         <!-- Floor -->
+        <geom condim="3" group="1" material="floorplane" name="floor" pos="0 0 0" size="3 3 .125" type="plane"/>
+        <!-- Walls (visual only) -->
+        <geom pos="-1.25 2.25 1.5" quat="0.6532815 0.6532815 0.2705981 0.2705981" size="1.06 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_leftcorner_visual" material="walls_mat"/>
+        <geom pos="-1.25 -2.25 1.5" quat="0.6532815 0.6532815 -0.2705981 -0.2705981" size="1.06 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_rightcorner_visual" material="walls_mat"/>
+        <geom pos="1.25 3 1.5" quat="0.7071 0.7071 0 0" size="1.75 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_left_visual" material="walls_mat"/>
+        <geom pos="1.25 -3 1.5" quat="0.7071 -0.7071 0 0" size="1.75 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_right_visual" material="walls_mat"/>
+        <geom pos="-2 0 1.5" quat="0.5 0.5 0.5 0.5" size="1.5 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_rear_visual" material="walls_mat"/>
+        <geom pos="3 0 1.5" quat="0.5 0.5 -0.5 -0.5" size="3 1.5 0.01" type="box" conaffinity="0" contype="0" group="1" name="wall_front_visual" material="walls_mat"/>
+        <!-- Table body -->
+        <body name="table" pos="0 0 0.4">
+            <geom pos="0 0 0" size="0.4 0.4 0.4" type="box" group="0" name="table_collision" friction="1 0.005 0.0001"/>
+            <geom pos="0 0 0" size="0.4 0.4 0.4" type="box" conaffinity="0" contype="0" group="1" name="table_visual" material="table_ceramic"/>
+            <site pos="0 0 0.4" name="table_top" size="0.001 0.001 0.001" rgba="0 0 0 0"/>
+            <!-- Legs (visual only) -->
+            <geom pos="0 0 0" size="0.05 0.1" type="cylinder" conaffinity="0" contype="0" group="1" name="table_leg1_visual" material="table_legs_metal"/>
+            <geom pos="0 0 0" size="0.05 0.1" type="cylinder" conaffinity="0" contype="0" group="1" name="table_leg2_visual" material="table_legs_metal"/>
+            <geom pos="0 0 0" size="0.05 0.1" type="cylinder" conaffinity="0" contype="0" group="1" name="table_leg3_visual" material="table_legs_metal"/>
+            <geom pos="0 0 0" size="0.05 0.1" type="cylinder" conaffinity="0" contype="0" group="1" name="table_leg4_visual" material="table_legs_metal"/>
+        </body>
+        <!-- Cabinet - depth (x), width (y), height (z) -->
+        <body name="cabinet" pos="0.3 0 1.2">
+            <!-- Door Frame -->
+            <body name="cabinet_frame" pos="0 0 0">
+                <!-- Left frame -->
+                <geom name="l_frame" type="box" size="0.2 0.01 0.2" pos="0 0.2 0" material="MatLightWood" group="1"/>
+                <!-- Right frame -->
+                <geom name="r_frame" type="box" size="0.185 0.01 0.2" pos="0.015 -0.2 0" material="MatLightWood" group="1"/>
+                <!-- Top frame -->
+                <geom name="top_frame" type="box" size="0.20 0.21 0.01" pos="0 0 0.21" material="MatLightWood" group="1"/>
+                <!-- Bottom frame -->
+                <geom name="bot_frame" type="box" size="0.20 0.21 0.01" pos="0 0 -0.21" material="MatLightWood" group="1"/>
+                <!-- back frame -->
+                <geom name="back_frame" type="box" size="0.01 0.21 0.22" pos="0.21 0 0" material="MatLightWood" group="1"/>
+                <!-- Door Panel -->
+            </body>
+            
+            <!-- Reference sites -->
+            <site name="cabinet_center" pos="0 0 0" size="0.005" rgba="0 1 0 0.5"/>
+            <site name="cabinet_bottom" pos="0 0 -0.2" rgba="0 0 0 0" size="0.005"/>
+            <site name="cabinet_top" pos="0 0 0.2" rgba="0 0 0 0" size="0.005"/>
+        </body>
+
+        <!-- Cabinet Door -->
+        <body name="cabinet_door">
+            <body name="object">
+                <body name="dframe" pos="0.11 -0.011 1.2" quat="0.707388 0 0 -0.706825">
+                    <inertial pos="0 0 0" quat="0.5 0.5 0.5 0.5" mass="7.85398" diaginertia="0.923301 0.764585 0.168533" />
+                    <!-- <geom size="0.019 0.22" pos="0.22 0 0" type="cylinder" rgba="1 1 1 1" group="1" name="r_dframe"/> -->
+                    <!-- <geom size="0.019 0.22" pos="-0.22 0 0" type="cylinder" rgba="1 1 1 1" group="1" name="l_dframe"/> -->
+                    <body name="door" pos="0 0 0">
+                        <inertial pos="0.0296816 -0.00152345 0" quat="0.701072 0 0 0.713091" mass="2.43455" diaginertia="0.0913751 0.0521615 0.043714" />
+                        <joint name="hinge" pos="0.2 0 0" axis="0 0 1" range="0.0 3.14" damping="1" frictionloss="1" limited="true"/>
+                        <geom size="0.199 0.01 0.199" type="box" friction="1 1 1" group="1" name="panel" material="MatClearMetal"/>
+                        <body name="latch" pos="-0.175 0 -0.025">
+                            <inertial pos="-0.017762 0.0138544 0" quat="0.365653 0.605347 -0.36522 0.605365" mass="0.1" diaginertia="0.0483771 0.0410001 0.0111013" />
+                            <geom fromto="0 0 0 0 -0.125 0" size="0.02" type="cylinder" group="1" name="handle_base" material="MatMetal"/>
+                            <geom size="0.075 0.015 0.02" pos="0.075 -0.10 0" type="box" group="1" name="handle" material="MatMetal"/>
+                            <!-- Don't render the door handle site by default -->
+                            <site name="handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
+                        </body>
+                    </body>
+                </body>
+            </body>
+            <site name="bottom_site" pos="0 0 -0.22" rgba="0 0 0 0" size="0.005"/>
+            <site name="top_site" pos="0 0 0.22" rgba="0 0 0 0" size="0.005"/>
+            <site name="horizontal_radius_site" pos="0 0 0" rgba="0 0 0 0" size="0.1"/>
+        </body>
+
+        <!-- Lighting and Cameras -->
+        <light pos="1.0 1.0 1.5" dir="-0.2 -0.2 -1" specular="0.3 0.3 0.3" directional="true" castshadow="true"/>
+        <!-- front view -->
+        <camera mode="fixed" name="frontview" pos="1.6 0 1.45" quat="0.56 0.43 0.43 0.56"/>
+        <!-- bird view -->
+        <camera mode="fixed" name="birdview" pos="-0.2 0 3.0" quat="0.7071 0 0 0.7071"/>
+        <!-- agent view -->
+        <camera mode="fixed" name="agentview" pos="1.0 0 1.75" quat="0.653 0.271 0.271 0.653"/>
+    </worldbody>
+</mujoco>

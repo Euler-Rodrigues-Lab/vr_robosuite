@@ -1,0 +1,15 @@
+logLevel: info
+rtsp: yes
+rtspAddress: :8554
+rtmp: no
+hls: no
+srt: no
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+# Override using MTX_WEBRTCADDITIONALHOSTS=<PC-LAN-IP> for the headset.
+webrtcAdditionalHosts: [127.0.0.1]
+paths:
+  # Matches XRT-Client's default FPV URL (the name does not require a ZED camera).
+  zed_stereo:
+    source: udp+mpegts://127.0.0.1:9000

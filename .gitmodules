@@ -1,0 +1,3 @@
+[submodule "external/dual_kinova3_teleop"]
+	path = external/dual_kinova3_teleop
+	url = https://github.com/Euler-Rodrigues-Lab/dual_kinova3_teleop.git

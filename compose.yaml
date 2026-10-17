@@ -1,0 +1,9 @@
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:1.15.6
+    network_mode: host
+    environment:
+      MTX_WEBRTCADDITIONALHOSTS: ${STREAM_HOST:?Set STREAM_HOST to this computer's LAN IP}
+    volumes:
+      - ./config/mediamtx.yml:/mediamtx.yml:ro
+    restart: unless-stopped

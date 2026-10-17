@@ -3,10 +3,29 @@ import numpy as np
 from .factory import native_sim
 
 
+def pinch_distance(frame, side):
+    """Thumb/index tip separation in metres; keep raw distance fallback for replays."""
+    fingers=getattr(frame,side+'_fingers',None) or {}
+    thumb=fingers.get('thumb',{}).get('thumb_tip')
+    index=fingers.get('index',{}).get('index_finger_tip')
+    if thumb is not None and index is not None:
+        thumb,index=np.asarray(thumb,dtype=float),np.asarray(index,dtype=float)
+        if thumb.shape==(3,) and index.shape==(3,) and np.isfinite([thumb,index]).all():
+            return float(np.linalg.norm(index-thumb))
+    distance=getattr(frame,side+'_gripper_val',None)
+    if distance is not None and np.isfinite(distance) and distance>=0:
+        return float(distance)
+    return None
+
+
 class RobotControl:
-    def __init__(self,env,variant='robotiq',controller='sew_mimic',rate=30,safety=True):
+    def __init__(self,env,variant='robotiq',controller='sew_mimic',rate=30,safety=True,retarget_mode='pose'):
         from dual_kinova3_teleop.session import make_session
+        if retarget_mode not in ('pose','tcp'):raise ValueError('retarget_mode must be pose or tcp')
+        if controller!='sew_mimic' and retarget_mode!='pose':
+            raise ValueError('TCP retargeting requires --controller sew_mimic')
         self.env,self.variant=env,variant
+        self.retarget_mode=retarget_mode
         self.model,self.data=native_sim(env)
         self.robot=env.robots[0];self.prefix=self.robot.robot_model.naming_prefix
         self.addresses={s:np.array([self.model.joint(f'{self.prefix}{s}_Actuator{i}').qposadr[0] for i in range(1,8)]) for s in ['right','left']}
@@ -14,10 +33,10 @@ class RobotControl:
         self.hand_session=None
         if controller=='sew_mimic':
             self.session=make_session(hand='psyonic' if variant=='psyonic' else None,
-                retarget_mode='tcp',collision_avoidance=safety,limited=True,shoulder_center_fallback=False)
+                retarget_mode=retarget_mode,collision_avoidance=safety,limited=True,shoulder_center_fallback=False)
         else:
             self.session=self._mink(rate)
-            if variant=='psyonic':self.hand_session=make_session(hand='psyonic',retarget_mode='tcp')
+            if variant=='psyonic':self.hand_session=make_session(hand='psyonic',retarget_mode='pose')
         q=self.feedback();self.session.reset(q['right'],q['left'])
         self.last=self.robot.create_action_vector({**q,**{s+'_gripper':v for s,v in self.grips.items()}})
     def feedback(self):return {s:self.data.qpos[a].copy() for s,a in self.addresses.items()}
@@ -37,8 +56,10 @@ class RobotControl:
                 hand=getattr(hands,'q_goal_'+side+'_hand',None)
                 if hand is not None:self.grips[side]=np.asarray(hand)
             else:
-                v=getattr(out,side+'_gripper_val',None)
-                if v is not None and abs(v)>.5:self.grips[side]=np.array([.8 if v>.5 else 0.])
+                distance=pinch_distance(frame,side)
+                # XRT *_gripper_val is a distance, not the legacy +/-1 action.
+                # Match SEW's 5 cm pinch threshold and the absolute 0..0.8 actuator.
+                if distance is not None:self.grips[side]=np.array([.8 if distance<=.05 else 0.])
             # Same absolute joint range clipping as the shared simulation mapping.
             if self.variant=='psyonic':
                 gripper=self.robot.gripper[side]

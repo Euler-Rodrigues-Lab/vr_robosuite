@@ -22,16 +22,25 @@ motion-to-display latency under the selected resolution. No physical Quest was
 available for this validation. No hardware robot was operated. DexMimicGen task
 compatibility has not been tested.
 
-## Free experimental wheel (2026-10-17)
+## Demo and full-access validation (2026-10-17)
 
-The free Dual Kinova build passes eight Rust license/grant checks, 12 installed
-wheel parity checks, and five provisioner checks. Robotiq and Psyonic SEW replay
-both advance with GEO_KIN_LICENSE pointing to a nonexistent file. The default
-live Robotiq path starts XR signaling and GStreamer without changing the active
-RBY1 license. The binary passes the symbol/path hygiene audit. These checks do
-not require a paid license; the grant is scoped to Dual Kinova products.
+- 12 Rust checks cover license verification, demo scope, the shared process
+  deadline and total banner animation duration.
+- 15 isolated demo-wheel checks cover solver parity, mounted grasp-site FK,
+  pinch-frame tracking and missing-landmark hold, plus a real 60-second expiry.
+  Session recreation and module reload cannot reset that timer. A covering dev
+  license unlocks pose/TCP even after the same process's demo timer expires.
+- 19 app/full-wheel checks cover camera initialization, metric pinch input,
+  actual simulated gripper closure, graceful demo expiry, and solver behavior.
+- Seven provisioner checks cover product validation, explicit virtualenv
+  interpreter selection, and preserving the previous wheel on validation failure.
+- Both full and demo wheels pass the binary symbol/path hygiene audit.
 
-The bundled wheel installs through `uv sync --locked` in a fresh virtual
-environment, imports from that environment's site-packages, and constructs both
-Dual Kinova hand variants with a nonexistent license path. CI checks this import
-and construction after a recursive checkout.
+The demo requires explicit `geo-kin-provision install --wheel ...` after
+`uv sync`; CI provisions it before checking import and construction with a
+missing license path. Normal dependency sync preserves the provisioned wheel.
+
+Separate left/right WHEP endpoints decode successfully, with crop orientation
+checked against the combined stream. The user confirmed working Quest streaming.
+Headset comfort, reconnection and latency under study conditions still need
+operator validation. No physical robot was operated.

@@ -18,11 +18,16 @@ class StereoRenderer:
         self.opt=mujoco.MjvOption();self.opt.geomgroup[0]=0
         self.base=self.model.body(env.robots[0].robot_model.naming_prefix+'base').id
         self.reference_rotation=self.data.cam_xmat[self.cam].reshape(3,3).copy()
+        # Exact SEW mujoco_camera_utils.R_std_mjcam, including its downward pitch.
         self.head_offset=Rotation.from_euler('ZYX',[-90,0,65],degrees=True).as_matrix()
+        self._set_head_rotation(np.eye(3))
     def track_head(self,frame):
         if frame is None or frame.head_rotation is None:return
+        self._set_head_rotation(frame.head_rotation)
+    def _set_head_rotation(self,rotation):
+        if not np.isfinite(rotation).all():return
         # Source experiment mapping: yaw/pitch, suppress roll, fixed neck origin.
-        euler=Rotation.from_matrix(frame.head_rotation).as_euler('ZYX');euler[2]=0
+        euler=Rotation.from_matrix(rotation).as_euler('ZYX');euler[2]=0
         base_r=self.data.xmat[self.base].reshape(3,3)
         world_r=base_r@Rotation.from_euler('ZYX',euler).as_matrix()@self.head_offset
         world_p=self.data.xpos[self.base]+base_r@np.array([.1,0,.55])

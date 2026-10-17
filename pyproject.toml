@@ -18,7 +18,6 @@ vr-robosuite = "vr_robosuite.cli:main"
 vr-study = "vr_robosuite.study:main"
 
 [tool.uv.sources]
-geo-kin = {path = "external/dual_kinova3_teleop/wheels/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl"}
 dual-kinova3-teleop = {path = "external/dual_kinova3_teleop", editable = true}
 xrt-devices = {path = "external/dual_kinova3_teleop/external/XRT_devices", editable = true}
 geo-kin-core = {path = "external/dual_kinova3_teleop/external/geo_kin_core", editable = true}

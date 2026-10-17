@@ -29,5 +29,5 @@ async def run(url,output):
     finally:await peer.close()
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8889/zed_stereo/whep');p.add_argument('--output')
+    p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8889/st/whep');p.add_argument('--output')
     a=p.parse_args();asyncio.run(run(a.url,a.output))

@@ -12,6 +12,7 @@ def parser():
     p.add_argument('--environment',default='ExpCabinet')
     p.add_argument('--variant',choices=['robotiq','psyonic'],default='robotiq')
     p.add_argument('--controller',choices=['sew_mimic','mink'],default='sew_mimic')
+    p.add_argument('--retarget-mode',choices=['pose','tcp'],default='pose',help='SEW arm mode; TCP uses the Robotiq fingertip pinch frame or Psyonic index MCP')
     p.add_argument('--device',choices=['xr','replay','idle'],default='xr')
     p.add_argument('--sample',choices=['ipman_roll','picking_up_mustard'],default='ipman_roll')
     p.add_argument('--frames');p.add_argument('--csv')
@@ -24,6 +25,8 @@ def parser():
     p.add_argument('--ipd',type=float,default=.065)
     p.add_argument('--fovy',type=float,default=75.)
     p.add_argument('--stream',default='udp://127.0.0.1:9000')
+    p.add_argument('--left-stream',default='udp://127.0.0.1:9002',help='Left-eye video destination')
+    p.add_argument('--right-stream',default='udp://127.0.0.1:9004',help='Right-eye video destination')
     p.add_argument('--no-stream',action='store_true')
     p.add_argument('--bitrate',type=int,default=12000,help='SBS H.264 kbps')
     p.add_argument('--no-safety-filter',action='store_true')
@@ -38,6 +41,7 @@ def parser():
 
 def run(args):
     import numpy as np
+    from geo_kin import DemoExpiredError
     from .factory import make_env,native_sim
     from .control import RobotControl
     from .recording import TrialRecorder,atomic_json
@@ -58,7 +62,7 @@ def run(args):
             env=make_env(args.environment,args.variant,args.rate,args.seed,args.plugin,**extra)
             stack.callback(env.close)
             model,data=native_sim(env)
-            control=RobotControl(env,args.variant,args.controller,args.rate,not args.no_safety_filter) if args.device!='idle' else None
+            control=RobotControl(env,args.variant,args.controller,args.rate,not args.no_safety_filter,args.retarget_mode) if args.device!='idle' else None
             metadata={**vars(args),'source':'vr_robosuite','safety_filter_active':args.controller=='sew_mimic' and not args.no_safety_filter,
                       'versions':versions(),'model_nq':model.nq,'model_nv':model.nv}
             recorder=TrialRecorder(directory,metadata,model)
@@ -68,7 +72,8 @@ def run(args):
             stack.callback(renderer.close)
             publisher=None
             if not args.no_stream:
-                publisher=stack.enter_context(GStreamerPublisher(2*args.width,args.height,args.rate,args.stream,args.bitrate,directory/'gstreamer.log'))
+                publisher=stack.enter_context(GStreamerPublisher(2*args.width,args.height,args.rate,args.stream,args.bitrate,directory/'gstreamer.log',
+                    eye_destinations=(args.left_stream,args.right_stream)))
             source=None
             if args.device=='xr':
                 source=XRDeviceAdapter(host=args.host,port=args.port,record_data=True,output_dir=str(directory/'input'))
@@ -109,6 +114,10 @@ def run(args):
                 Image.fromarray(renderer.render()).save(path)
             if publisher:
                 recorder.metadata['stream_counts']={k:getattr(publisher,k) for k in ['submitted','written','dropped']}
+    except DemoExpiredError as exc:
+        status='demo_expired'
+        if recorder:recorder.metadata['demo_limit']=str(exc)
+        print(str(exc),flush=True)
     except KeyboardInterrupt:status='aborted'
     except BaseException as exc:
         status='error'

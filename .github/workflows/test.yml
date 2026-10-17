@@ -13,6 +13,10 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libopengl0
       - run: uv sync --python 3.10 --extra test --extra mink --locked
+      - name: explicitly provision the demo wheel
+        env:
+          GEO_KIN_LICENSE: /tmp/no-organization-license.toml
+        run: uv run geo-kin-provision install --project . --wheel external/dual_kinova3_teleop/wheels/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl
       - name: import bundled wheel without an organization license
         env:
           GEO_KIN_LICENSE: /tmp/no-organization-license.toml

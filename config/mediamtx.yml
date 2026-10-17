@@ -13,3 +13,16 @@ paths:
   # Matches XRT-Client's default FPV URL (the name does not require a ZED camera).
   zed_stereo:
     source: udp+mpegts://127.0.0.1:9000
+  # Short public name; relay the existing stream without a second UDP listener.
+  stereo:
+    source: rtsp://127.0.0.1:8554/zed_stereo
+    rtspTransport: tcp
+    sourceOnDemand: yes
+  st:
+    source: rtsp://127.0.0.1:8554/zed_stereo
+    rtspTransport: tcp
+    sourceOnDemand: yes
+  st/left:
+    source: udp+mpegts://127.0.0.1:9002
+  st/right:
+    source: udp+mpegts://127.0.0.1:9004

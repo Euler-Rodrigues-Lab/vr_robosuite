@@ -1,6 +1,6 @@
 # VR Robosuite
 
-Quest binocular teleoperation for the three SEW-Geometric-Teleop study tasks:
+Quest binocular teleoperation for the three SEW-Mimic-Teleop study tasks:
 **ExpCabinet**, **ExpGlassGap**, and **ExpHandover**. Both Dual Kinova 3
 **Robotiq** and **Psyonic Ability** variants run with robosuite task physics.
 

@@ -69,14 +69,6 @@ dev sessions have full pose/TCP access and no one-minute limit. Your selected
 wheel is preserved by subsequent `uv sync` runs. Recreating the virtual
 environment requires provisioning it again.
 
-Without a covering dev license, the demo supports **pose mode only** and permits
-**one minute per Python process**, starting at the first solver call. Its banner
-finishes in 0.5–1 second total. At expiry, solver output stops and the trial
-closes with status `demo_expired`, preserving its recording. There is no
-automatic cooldown or resume. Resetting or recreating a solver cannot renew the
-timer; restart the app for another demonstration. Automating restarts to provide
-continuous solver use is prohibited by the license. These restrictions do not
-make unauthorized use technically impossible.
 
 The default arm mode is **pose**. Licensed users can select TCP with
 `--retarget-mode tcp` (SEW controller). For Robotiq, `gripper_palmbox` has its
@@ -242,7 +234,7 @@ Chuizheng Kong et al., 2026.
   including pose tracking and WebRTC communication.
 - **[Wonsuhk Jung](https://wonsuhkjung.wordpress.com/)** and
   **[Long Kiu (Edgar) Chung](https://www.linkedin.com/in/long-kiu-chung-b14a67156/)**
-  developed the SEW-Mimic safety filter.
+  developed the XPBD safety filter with continuous time collision detection.
 
 See the [SEW-Mimic contributor page](https://sew-mimic.com/authors) for the
 full project team and contributions.

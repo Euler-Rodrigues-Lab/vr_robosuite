@@ -13,5 +13,9 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libopengl0
       - run: uv sync --python 3.10 --extra test --extra mink --locked
+      - name: import bundled wheel without an organization license
+        env:
+          GEO_KIN_LICENSE: /tmp/no-organization-license.toml
+        run: uv run python -c 'import geo_kin; assert "dual_kinova3-psyonic" in geo_kin.FREE_PRODUCTS; geo_kin.RetargetSession(robot="dual_kinova3"); geo_kin.RetargetSession(robot="dual_kinova3", hand="psyonic")'
       - run: uv run pytest -q
       - run: uv run pytest -q external/dual_kinova3_teleop/external/XRT_devices/tests/test_gstreamer.py external/dual_kinova3_teleop/external/geo_kin_core/tests/test_provision_products.py

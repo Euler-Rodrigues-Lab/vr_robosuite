@@ -30,3 +30,8 @@ both advance with GEO_KIN_LICENSE pointing to a nonexistent file. The default
 live Robotiq path starts XR signaling and GStreamer without changing the active
 RBY1 license. The binary passes the symbol/path hygiene audit. These checks do
 not require a paid license; the grant is scoped to Dual Kinova products.
+
+The bundled wheel installs through `uv sync --locked` in a fresh virtual
+environment, imports from that environment's site-packages, and constructs both
+Dual Kinova hand variants with a nonexistent license path. CI checks this import
+and construction after a recursive checkout.

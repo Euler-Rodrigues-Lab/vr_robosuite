@@ -26,26 +26,20 @@ Dual Kinova is a **free experimental product**. Its wheel supports Robotiq and
 Psyonic Ability hands with no license file, activation or expiry. Other robot
 products retain their existing license requirements.
 
-Download and install the free Linux x86_64 wheel (Python 3.10+, glibc 2.34+):
+The Linux x86_64 wheel (Python 3.10+, glibc 2.34+) is bundled under
+`external/dual_kinova3_teleop/wheels/` and installed automatically by `uv sync`.
+No separate download or provisioner command is required:
 
 ```bash
-mkdir -p /tmp/vr-robosuite-wheel
-curl -fL https://github.com/Euler-Rodrigues-Lab/vr_robosuite/releases/download/experimental-dual-kinova3-v0.1.0/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl \
-  -o /tmp/vr-robosuite-wheel/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl
-uv run geo-kin-provision register --product dual_kinova3-psyonic \
-  --wheel /tmp/vr-robosuite-wheel/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl --replace
-uv run geo-kin-provision install --product dual_kinova3-psyonic
+git submodule update --init --recursive
+uv sync --extra mink --extra test
+uv run python -c "import geo_kin; print(geo_kin.FREE_PRODUCTS)"
 ```
 
-This one wheel covers both gripper variants. The provisioner installs it into
-shared storage and links this virtual environment. Existing licenses for other
-robots are preserved, and an unrelated `GEO_KIN_LICENSE` does not block Dual
-Kinova. After updating the checkout, run `git submodule update --init --recursive`
-to pick up free-product provisioning support.
-
-The [release](https://github.com/Euler-Rodrigues-Lab/vr_robosuite/releases/tag/experimental-dual-kinova3-v0.1.0)
-includes the checksum and distribution grant. Binary use and redistribution are
-free of charge; solver source remains proprietary.
+This one wheel covers both gripper variants. Existing licenses for other robots
+are preserved, and an unrelated `GEO_KIN_LICENSE` does not block Dual Kinova.
+The distribution grant and SHA256 checksum accompany the wheel in the submodule.
+Binary use and redistribution are free of charge; solver source remains proprietary.
 
 ## Preview and both sample recordings
 
@@ -157,4 +151,4 @@ MUJOCO_GL=egl uv run pytest -q
 ```
 
 See [third-party notices](THIRD_PARTY_NOTICES.md): the wine glass asset carries
-CC BY-NC terms. The binary wheel is supplied as a release asset; license files are never committed.
+CC BY-NC terms. The binary wheel is bundled in the Dual Kinova submodule and available as a release asset; license files are never committed.

@@ -21,3 +21,12 @@ network: eye order, comfortable IPD, head-view mapping, pose reconnection, and
 motion-to-display latency under the selected resolution. No physical Quest was
 available for this validation. No hardware robot was operated. DexMimicGen task
 compatibility has not been tested.
+
+## Free experimental wheel (2026-10-17)
+
+The free Dual Kinova build passes eight Rust license/grant checks, 12 installed
+wheel parity checks, and five provisioner checks. Robotiq and Psyonic SEW replay
+both advance with GEO_KIN_LICENSE pointing to a nonexistent file. The default
+live Robotiq path starts XR signaling and GStreamer without changing the active
+RBY1 license. The binary passes the symbol/path hygiene audit. These checks do
+not require a paid license; the grant is scoped to Dual Kinova products.

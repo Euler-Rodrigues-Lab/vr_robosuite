@@ -22,20 +22,30 @@ sudo apt-get install gstreamer1.0-tools gstreamer1.0-plugins-base \
 export MUJOCO_GL=egl
 ```
 
-SEW retargeting requires a separately supplied geo_kin wheel covering
-`dual_kinova3` and, for Ability hands, `psyonic`. Keep your license outside Git:
+Dual Kinova is a **free experimental product**. Its wheel supports Robotiq and
+Psyonic Ability hands with no license file, activation or expiry. Other robot
+products retain their existing license requirements.
+
+Download and install the free Linux x86_64 wheel (Python 3.10+, glibc 2.34+):
 
 ```bash
-export GEO_KIN_LICENSE=/absolute/path/geo_kin_license.toml
-uv run geo-kin-provision install --product dual_kinova3-psyonic \
-  --wheel /absolute/path/geo_kin-....whl
+mkdir -p /tmp/vr-robosuite-wheel
+curl -fL https://github.com/Euler-Rodrigues-Lab/vr_robosuite/releases/download/experimental-dual-kinova3-v0.1.0/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl \
+  -o /tmp/vr-robosuite-wheel/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl
+uv run geo-kin-provision register --product dual_kinova3-psyonic \
+  --wheel /tmp/vr-robosuite-wheel/geo_kin-0.1.0-cp310-abi3-manylinux_2_34_x86_64.whl --replace
+uv run geo-kin-provision install --product dual_kinova3-psyonic
 ```
 
-Use the distributor's actual wheel filename. If registering an updated wheel
-under an existing filename, use `geo-kin-provision register --replace` before
-installing. The provisioner's shared install is used by this virtual environment.
-A Robotiq-only MINK run and idle previews do not need the proprietary solver;
-MINK with Psyonic still uses geo_kin for fingers.
+This one wheel covers both gripper variants. The provisioner installs it into
+shared storage and links this virtual environment. Existing licenses for other
+robots are preserved, and an unrelated `GEO_KIN_LICENSE` does not block Dual
+Kinova. After updating the checkout, run `git submodule update --init --recursive`
+to pick up free-product provisioning support.
+
+The [release](https://github.com/Euler-Rodrigues-Lab/vr_robosuite/releases/tag/experimental-dual-kinova3-v0.1.0)
+includes the checksum and distribution grant. Binary use and redistribution are
+free of charge; solver source remains proprietary.
 
 ## Preview and both sample recordings
 
@@ -147,4 +157,4 @@ MUJOCO_GL=egl uv run pytest -q
 ```
 
 See [third-party notices](THIRD_PARTY_NOTICES.md): the wine glass asset carries
-CC BY-NC terms. Proprietary wheels and license files are never committed.
+CC BY-NC terms. The binary wheel is supplied as a release asset; license files are never committed.

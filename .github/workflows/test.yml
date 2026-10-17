@@ -14,4 +14,4 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libopengl0
       - run: uv sync --python 3.10 --extra test --extra mink --locked
       - run: uv run pytest -q
-      - run: uv run pytest -q external/dual_kinova3_teleop/external/XRT_devices/tests/test_gstreamer.py
+      - run: uv run pytest -q external/dual_kinova3_teleop/external/XRT_devices/tests/test_gstreamer.py external/dual_kinova3_teleop/external/geo_kin_core/tests/test_provision_products.py

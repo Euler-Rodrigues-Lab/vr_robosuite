@@ -1,7 +1,5 @@
 # VR Robosuite
 
-![Stereo cabinet scene received through WebRTC](docs/media/webrtc-stereo.png)
-
 Quest binocular teleoperation for the three SEW-Geometric-Teleop study tasks:
 **ExpCabinet**, **ExpGlassGap**, and **ExpHandover**. Both Dual Kinova 3
 **Robotiq** and **Psyonic Ability** variants run with robosuite task physics.
@@ -10,6 +8,32 @@ The pinned [dual_kinova3_teleop](https://github.com/Euler-Rodrigues-Lab/dual_kin
 submodule supplies robot assets, sample motions and retargeting sessions. Its
 nested XRT_devices supplies Quest input, replay, recording, and the reusable
 GStreamer RGB publisher. There is no dependency on a local SEW source checkout.
+
+## Rendered scenes
+
+Initial MuJoCo views of all three environments with Robotiq grippers, using the
+same binocular renderer and default look-down angle as the Quest stream.
+Each image shows the left and right eyes side by side.
+
+**ExpCabinet**
+
+![ExpCabinet: cabinet and door handle in the binocular robot view](docs/media/exp-cabinet-stereo.png)
+
+**ExpGlassGap**
+
+![ExpGlassGap: wine-glass obstacles and target block in the binocular robot view](docs/media/exp-glass-gap-stereo.png)
+
+**ExpHandover**
+
+![ExpHandover: target block and handover region in the binocular robot view](docs/media/exp-handover-stereo.png)
+
+To reproduce a preview, replace the environment name as needed:
+
+```bash
+MUJOCO_GL=egl uv run vr-robosuite --device idle --no-stream --steps 1 \
+  --environment ExpCabinet --variant robotiq --width 960 --height 720 \
+  --snapshot cabinet.png
+```
 
 ## Setup (Linux)
 
@@ -183,3 +207,42 @@ MUJOCO_GL=egl uv run pytest -q
 
 See [third-party notices](THIRD_PARTY_NOTICES.md): the wine glass asset carries
 CC BY-NC terms. The binary wheel is bundled in the Dual Kinova submodule with its checksum and demo terms; personal license files are never committed.
+
+
+## Citation
+
+These study environments and the retargeting method originate from
+[SEW-Mimic](https://sew-mimic.com/). If you use this demo, its environments, or
+SEW-Mimic in your research, please cite the paper:
+
+[A Closed-Form Geometric Retargeting Solver for Upper Body Humanoid Robot Teleoperation](https://arxiv.org/abs/2602.01632),
+Chuizheng Kong et al., 2026.
+
+```bibtex
+@article{kong2026closedform,
+  title={A Closed-Form Geometric Retargeting Solver for Upper Body Humanoid Robot Teleoperation},
+  author={Kong, Chuizheng and Cho, Yunho and Jung, Wonsuhk and Wibowo, Idris and
+          Shinde, Parth and Vinodh-Sangeetha, Sundhar and Chung, Long Kiu and
+          Chen, Zhenyang and Mattei, Andrew and Nidumukkala, Advaith and
+          Elias, Alexander and Xu, Danfei and Higgins, Taylor and Kousik, Shreyas},
+  journal={arXiv preprint arXiv:2602.01632},
+  year={2026},
+  doi={10.48550/arXiv.2602.01632},
+  url={https://arxiv.org/abs/2602.01632}
+}
+```
+
+## Credits
+
+- **[Idris Wibowo](https://www.linkedin.com/in/idris-wibowo/)** created the
+  original study environments: ExpCabinet, ExpGlassGap, and ExpHandover.
+- **[Sundhar Vinodh Sangeetha](https://sundharvs.com/)** created the binocular
+  vision and video-streaming pipeline for the simulated environments.
+- **[Yunho Cho](https://yunhocho.com/)** created the Quest teleoperation app,
+  including pose tracking and WebRTC communication.
+- **[Wonsuhk Jung](https://wonsuhkjung.wordpress.com/)** and
+  **[Long Kiu (Edgar) Chung](https://www.linkedin.com/in/long-kiu-chung-b14a67156/)**
+  developed the SEW-Mimic safety filter.
+
+See the [SEW-Mimic contributor page](https://sew-mimic.com/authors) for the
+full project team and contributions.
